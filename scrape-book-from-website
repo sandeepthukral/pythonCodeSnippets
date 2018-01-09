@@ -1,0 +1,19 @@
+from bs4 import BeautifulSoup
+from urllib.request import Request, urlopen
+
+URL = http://www.lovebookvampire.com/newest-books/American-Kingpin/
+pages = range(1,90)
+
+CONTENT = []
+
+for page in pages:
+	req = Request('http://www.lovebookvampire.com/newest-books/American-Kingpin/page_' + str(page) + '.html', headers={'User-Agent': 'Mozilla/5.0'})
+	webpage = urlopen(req).read()
+	soup = BeautifulSoup(webpage)
+	contents = soup.find_all("div", class_="content")
+	content = str(contents[0])
+	CONTENT.append(content)
+
+
+with open('/tmp/american-kingpin.txt', mode='wt', encoding='utf-8') as myfile:
+    myfile.write('\n'.join(CONTENT))
